@@ -57,16 +57,23 @@ the CA are volumes:
 
 ```bash
 make docker-build                      # build the image
-docker run --rm -p 8080:8080 \
+make docker-run                        # proxy on :8899, findings in ./out
+make docker-run PORT=9123              # …or pick any free port
+```
+
+The listen port is parametrised (8080 collides with too many apps), default
+**8899**. Override per run with `-e LISTEN_PORT` and the matching `-p`:
+
+```bash
+docker run --rm -p 9123:9123 -e LISTEN_PORT=9123 \
   -v "$PWD/profile.json:/app/profile.json:ro" \
   -v "$PWD/out:/data" \
   -v pii_mitm_ca:/root/.mitmproxy \
-  pii-mitm-leak-proxy                  # proxy on :8080, findings in ./out
+  pii-mitm-leak-proxy
 ```
 
 Point the app's `HTTP(S)_PROXY` at the container and trust the CA it writes to
-the `pii_mitm_ca` volume in the **test** environment. `make docker-run` wraps the
-command above for a quick local check.
+the `pii_mitm_ca` volume in the **test** environment.
 
 For HTTPS interception the client must trust the proxy CA in the **test**
 environment (and certificate pinning, if present, must be relaxed there). That

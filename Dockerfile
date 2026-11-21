@@ -13,15 +13,22 @@ COPY detector.py addon.py doctor.py ./
 
 # Profile is provided by the client at runtime (mount or env); findings are
 # written to a mounted volume so nothing sensitive stays in the image layer.
+# Listen port is parametrised (8080 collides with too many apps). Override at
+# build time (--build-arg LISTEN_PORT=…) or, more usefully, at run time
+# (-e LISTEN_PORT=… -p …). Default 8899 to dodge the common 8080 clash.
+ARG LISTEN_PORT=8899
+
 ENV PROFILE=/app/profile.json \
-    PII_OUT=/data/findings.json
+    PII_OUT=/data/findings.json \
+    LISTEN_HOST=0.0.0.0 \
+    LISTEN_PORT=${LISTEN_PORT}
 
 # mitmproxy CA lives here; mount it as a volume so the SAME CA persists across
 # restarts (the client trusts it once in the test environment).
 VOLUME ["/root/.mitmproxy", "/data"]
 
-EXPOSE 8080
+EXPOSE ${LISTEN_PORT}
 
-# Long-running proxy (not the demo). Override the flags via `docker run ... args`.
-ENTRYPOINT ["mitmdump", "-s", "addon.py"]
-CMD ["--listen-host", "0.0.0.0", "--listen-port", "8080"]
+# Long-running proxy (not the demo). Shell form so $LISTEN_* expand at run time;
+# extra flags passed to `docker run ... <args>` are forwarded via "$@".
+ENTRYPOINT ["sh", "-c", "exec mitmdump -s addon.py --listen-host \"$LISTEN_HOST\" --listen-port \"$LISTEN_PORT\" \"$@\"", "--"]
