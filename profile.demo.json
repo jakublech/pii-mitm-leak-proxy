@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "name": "live-demo",
+    "findingPrefix": "DEMO"
+  },
+  "watchHosts": ["127.0.0.1"],
+  "sensitiveFields": ["mrn", "patientName"],
+  "sensitiveValues": ["MRN-X-999", "Test Identity"],
+  "patterns": {
+    "mrn": "MRN-[A-Z]-\\d{3,}"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "name": "example-fictional",
+    "findingPrefix": "PIILEAK"
+  },
+  "watchHosts": [
+    "telemetry.example-vendor.test",
+    "*.analytics.example.test"
+  ],
+  "sensitiveFields": ["mrn", "email", "patientName", "pesel"],
+  "sensitiveValues": [
+    "MRN-X-999",
+    "seeded.tester@example.test",
+    "Test Identity"
+  ],
+  "patterns": {
+    "email": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+    "mrn": "MRN-[A-Z]-\\d{3,}",
+    "pesel": "\\b\\d{11}\\b"
+  }
+}

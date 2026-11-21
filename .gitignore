@@ -1,0 +1,6 @@
+# Never commit real engagement data, secrets or captured traffic.
+profile.json
+*.secret
+findings.json
+__pycache__/
+*.pyc

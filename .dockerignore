@@ -1,0 +1,10 @@
+# Keep the image generic — no client data, no state, no test scaffolding.
+.git
+__pycache__
+*.pyc
+profile.json
+*.secret
+findings.json
+mock/
+test/
+*.md
