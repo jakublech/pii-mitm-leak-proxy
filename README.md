@@ -98,6 +98,13 @@ This repo is generic tooling. It must contain **no** client data: no real
 `watchHosts`, no real `sensitiveValues`, no `profile.json`. Those live only in
 the per-engagement workspace and are git-ignored.
 
+## Scope & authorization
+
+Run this only against systems you own or are **authorized in writing** to test.
+It intercepts TLS, so it is for a controlled assessment environment where CA
+trust and any certificate pinning are arranged as part of scope — never against
+third parties or production traffic you do not control.
+
 ## License
 
-MIT (intended). Add a `LICENSE` file before publishing.
+[MIT](LICENSE).
